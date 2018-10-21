@@ -1,0 +1,10 @@
+
+ Start  Stop   Length Name                   Class
+ 00000H 00017H 00018H FUNC_DATA              DATA
+ 00018H 000A5H 0008EH DATAS                  DATA
+ 000A6H 000B5H 00010H DATAS                  DATA
+ 000B6H 000CDH 00018H DATAS                  DATA
+ 000D0H 00133H 00064H SSTACK                 STACK
+ 00140H 0039CH 0025DH CSEG                   CODE
+
+Program entry point at 0014:0000

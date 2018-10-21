@@ -1,0 +1,141 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN NEW_LINE: near
+       2				
+       3 0000				DataS   SEGMENT WORD 'DATA'
+       4 0000  0D			MENU_MESSAGE    DB   13
+       5 0001  0A			                DB   10
+       6 0002  4D 45 4E 55 3A		                DB   'MENU:'
+       7				
+       8 0007  0D							DB   13
+       9 0008  0A							DB   10
+      10 0009  30 20 49 4E 50 55					DB   '0
+					 INPUT MENU NUMBER'
+      11       54 20 4D 45 4E 55	
+      12       20 4E 55 4D 42 45	
+      13       52			
+      14				
+      15 001C  0D							DB   13
+      16 001D  0A							DB   10
+      17 001E  31 20 49 4E 50 55					DB   '1
+					 INPUT VALUE'
+      18       54 20 56 41 4C 55	
+      19       45			
+      20				
+      21 002B  0D							DB   13
+      22 002C  0A							DB   10
+      23 002D  32 20 42 49 4E 20					DB   '2
+					 BIN UNSIGNED'
+      24       55 4E 53 49 47 4E	
+      25       45 44			
+      26				
+      27 003B  0D							DB   13
+      28 003C  0A							DB   10
+      29 003D  33 20 42 49 4E 20					DB   '3
+					 BIN SIGNED'
+      30       53 49 47 4E 45 44	
+      31				
+      32 0049  0D							DB   13
+      33 004A  0A							DB   10
+      34 004B  34 20 44 45 43 20					DB   '4
+					 DEC UNSIGNED'
+      35       55 4E 53 49 47 4E	
+      36       45 44			
+      37				
+      38 0059  0D							DB   13
+      39 005A  0A							DB   10
+      40 005B  35 20 44 45 43 20					DB   '5
+					 DEC SIGNED'
+      41       53 49 47 4E 45 44	
+      42					
+      43 0067  0D							DB   13
+      44 0068  0A							DB   10
+      45 0069  36 20 48 45 58 20					DB   '6
+					 HEX UNSIGNED'
+      46       55 4E 53 49 47 4E	
+      47       45 44			
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-2
+
+
+      48								
+      49 0077  0D							DB   13
+      50 0078  0A							DB   10
+      51 0079  37 20 48 45 58 20					DB   '7
+					 HEX SIGNED'
+      52       53 49 47 4E 45 44	
+      53						
+      54 0085  0D							DB   13
+      55 0086  0A							DB   10
+      56 0087  38 20 45 58 49 54					DB   '8
+					 EXIT'
+      57 008D  24							DB   '$
+					'	
+      58 008E				DataS   ENDS
+      59				
+      60 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+      61					ASSUME CS:CSEG, DS:DataS
+      62					
+      63 0000					MENU_PRINT PROC NEAR
+      64 0000  55					PUSH BP		
+      65 0001  8B EC					MOV BP, SP
+      66 0003  8B 46 04					MOV AX, [BP + 4]
+      67 0006  1E					PUSH DS
+      68						
+      69 0007  B8 ---- R				MOV AX, DataS
+      70 000A  8E D8					MOV DS, AX
+      71						
+      72 000C  B4 09					mov   AH,9
+      73						
+      74						; PRINTING MENU
+      75 000E  BA 0000 R				mov   DX, OFFSET MENU_M
+					ESSAGE        
+      76 0011  CD 21			        int   21h 	
+      77						
+      78 0013  E8 0000 E				CALL NEW_LINE
+      79						
+      80 0016  1F					POP DS		
+      81 0017  5D					POP BP
+      82 0018  C2 0002					RET 2
+      83 001B					MENU_PRINT ENDP
+      84					
+      85 001B				CSEG ENDS
+      86				
+      87				PUBLIC MENU_PRINT
+      88				
+      89				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	001B	PARA	PUBLIC	'CODE'
+DATAS  . . . . . . . . . . . . .  	008E	WORD	NONE	'DATA'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+MENU_MESSAGE . . . . . . . . . .  	L BYTE	0000	DATAS
+MENU_PRINT . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 001B
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F0		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     75 Source  Lines
+     75 Total   Lines
+     16 Symbols
+
+  46534 + 439286 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

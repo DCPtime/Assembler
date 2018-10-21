@@ -1,0 +1,149 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN NEW_LINE: NEAR
+       2				
+       3 0000				DataS   SEGMENT WORD 'DATA'
+       4 0000  0D			INPUT_MESSAGE   DB   13
+       5 0001  0A			                DB   10
+       6 0002  49 4E 50 55 54 20	                DB   'INPUT VALUE: '
+       7       56 41 4C 55 45 3A	
+       8       20			
+       9 000F  24							DB '$'
+      10								
+      11 0010				DataS   ENDS
+      12				
+      13 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+      14					ASSUME CS:CSEG, DS:DataS
+      15					
+      16 0000					INPUT PROC NEAR
+      17 0000  55					PUSH BP
+      18 0001  8B EC					MOV BP, SP
+      19 0003  8B 46 04					MOV AX, [BP + 4] ; Во
+					звращаемый параметр
+      20 0006  8B D8					MOV BX, AX	
+      21 0008  1E					PUSH DS
+      22						
+      23 0009  B8 ---- R				MOV AX, DataS
+      24 000C  8E D8					MOV DS, AX
+      25						
+      26						; PRINTING  INTRO
+      27 000E  B4 09					MOV AH, 9
+      28 0010  BA 0000 R				MOV DX, OFFSET INPUT_ME
+					SSAGE
+      29 0013  CD 21					INT 21H
+      30						
+      31 0015  1F					POP DS
+      32						
+      33						; INITIAL VALUE
+      34 0016  B8 0000					MOV AX, 0
+      35 0019  89 07					MOV [BX], AX
+      36						
+      37						; READING SIGN
+      38 001B  B4 07					MOV AH, 7
+      39 001D  CD 21					INT 21H
+      40						; ECHO
+      41 001F  B4 02					MOV AH, 2
+      42 0021  8A D0					MOV DL, AL
+      43 0023  CD 21					INT 21H
+      44						
+      45 0025  B6 00					MOV DH, 0
+      46 0027  3C 2D					CMP AL, '-'
+      47 0029  75 04					JNE POSITIVE
+      48 002B  B6 01					MOV DH, 1 ; HAS '-' SIG
+					N
+      49 002D  B0 30					MOV AL, '0'
+      50 002F						POSITIVE:
+      51 002F  2C 30					SUB AL, '0'
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-2
+
+
+      52 0031  00 07					ADD [BX], AL
+      53						
+      54						; READING LOOP WHILE SY
+					MBOL <= 9
+      55 0033						READING:
+      56 0033  B4 07					MOV AH, 7
+      57 0035  CD 21					INT 21H		
+      58						; ECHO
+      59 0037  B4 02					MOV AH, 2
+      60 0039  8A D0					MOV DL, AL
+      61 003B  CD 21					INT 21H
+      62						
+      63 003D  2C 30					SUB AL, '0'
+      64 003F  3C 09					CMP AL, 9
+      65 0041  77 0E					JA FINISH
+      66						
+      67 0043  8A D0					MOV DL, AL
+      68 0045  B1 0A					MOV CL, 10
+      69 0047  8B 07					MOV AX, [BX]
+      70 0049  F6 E1					MUL CL
+      71						
+      72 004B  89 07					MOV [BX], AX
+      73 004D  00 17					ADD [BX], DL
+      74 004F  EB E2					JMP READING	
+						
+      75						
+      76 0051						FINISH:
+      77						
+      78 0051  80 FE 01					CMP DH, 1
+      79 0054  75 06					JNE NO_SIGN
+      80 0056  8B 07					MOV AX, [BX]
+      81 0058  F7 D8					NEG AX
+      82 005A  89 07					MOV [BX], AX
+      83						
+      84 005C						NO_SIGN:
+      85						
+      86 005C  E8 0000 E				CALL NEW_LINE
+      87						
+      88 005F  5D					POP BP
+      89 0060  C2 0002					RET 2
+      90 0063					INPUT ENDP
+      91					
+      92 0063				CSEG ENDS
+      93				
+      94				PUBLIC INPUT
+      95				
+      96				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0063	PARA	PUBLIC	'CODE'
+DATAS  . . . . . . . . . . . . .  	0010	WORD	NONE	'DATA'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+FINISH . . . . . . . . . . . . .  	L NEAR	0051	CSEG
+
+INPUT  . . . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 0063
+INPUT_MESSAGE  . . . . . . . . .  	L BYTE	0000	DATAS
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+NO_SIGN  . . . . . . . . . . . .  	L NEAR	005C	CSEG
+
+POSITIVE . . . . . . . . . . . .  	L NEAR	002F	CSEG
+
+READING  . . . . . . . . . . . .  	L NEAR	0033	CSEG
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F1		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     94 Source  Lines
+     94 Total   Lines
+     20 Symbols
+
+  46534 + 439286 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

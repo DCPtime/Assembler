@@ -1,0 +1,87 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN NEW_LINE: NEAR
+       2				
+       3 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+       4					ASSUME CS:CSEG
+       5					
+       6 0000					DEC_UNSIGN PROC NEAR
+       7 0000  55					PUSH BP
+       8 0001  8B EC					MOV BP, SP
+       9 0003  8B 5E 04					MOV BX, [BP + 4] ; DEVI
+					DEND
+      10 0006  8B 07					MOV AX, [BX] ; VALUE
+      11						
+      12 0008  BA 0058					MOV DX, 'X'
+      13 000B  52					PUSH DX    ; STOP-SYMBO
+					L
+      14						
+      15 000C						NEXT:
+      16 000C  BA 0000					MOV DX, 0
+      17 000F  B9 000A					MOV CX, 10
+      18 0012  F7 F1					DIV CX     ; AX = AX / 
+					CX; DX = R(AX / CX)
+      19 0014  52					PUSH DX    ; PUSHING RE
+					MAINDER
+      20 0015  3D 0000					CMP AX, 0
+      21 0018  75 F2					JNE NEXT
+      22						
+      23 001A						PRINT:		
+      24 001A  5A					POP DX
+      25 001B  83 FA 58					CMP DX, 'X'
+      26 001E  74 09					JE FINISH
+      27 0020  B4 02					MOV AH, 2
+      28 0022  83 C2 30					ADD DX, '0'
+      29 0025  CD 21					INT 21H
+      30 0027  EB F1					JMP PRINT
+      31						
+      32 0029						FINISH:
+      33 0029  E8 0000 E				CALL NEW_LINE
+      34						
+      35 002C  5D					POP BP
+      36 002D  C2 0002					RET 2
+      37 0030					DEC_UNSIGN ENDP
+      38					
+      39 0030				CSEG ENDS
+      40				
+      41				PUBLIC DEC_UNSIGN
+      42				
+      43				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0030	PARA	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+DEC_UNSIGN . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 0030
+
+FINISH . . . . . . . . . . . . .  	L NEAR	0029	CSEG
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+NEXT . . . . . . . . . . . . . .  	L NEAR	000C	CSEG
+
+PRINT  . . . . . . . . . . . . .  	L NEAR	001A	CSEG
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F4		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     43 Source  Lines
+     43 Total   Lines
+     16 Symbols
+
+  46536 + 441332 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

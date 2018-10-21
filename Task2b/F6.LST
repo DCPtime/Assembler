@@ -1,0 +1,109 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+       2					ASSUME CS:CSEG
+       3					
+       4 0000					HEX_UNSIGN PROC NEAR
+       5 0000  55					PUSH BP
+       6 0001  8B EC					MOV BP, SP
+       7 0003  8B 5E 04					MOV BX, [BP + 4]
+							
+       8 0006  8B 07					MOV AX, [BX]
+       9						
+      10 0008  BE 0004					MOV SI, 4
+      11						
+      12 000B						NEXT:
+      13						; READING FOUR DIGITS
+      14 000B  BA 0000					MOV DX, 0
+      15						
+      16 000E  D1 E0					SHL AX, 1
+      17 0010  73 03					JNC SKIP_1
+      18 0012  83 C2 08					ADD DX, 8
+      19				
+      20 0015					SKIP_1:
+      21 0015  D1 E0					SHL AX, 1
+      22 0017  73 03					JNC SKIP_2
+      23 0019  83 C2 04					ADD DX, 4
+      24				
+      25 001C					SKIP_2:
+      26 001C  D1 E0					SHL AX, 1
+      27 001E  73 03					JNC SKIP_3
+      28 0020  83 C2 02					ADD DX, 2
+      29				
+      30 0023					SKIP_3:
+      31 0023  D1 E0					SHL AX, 1
+      32 0025  73 03					JNC SKIP_4
+      33 0027  83 C2 01					ADD DX, 1
+      34				
+      35 002A					SKIP_4:
+      36 002A  83 FA 09					CMP DX, 9
+      37 002D  7F 06					JG LETTER
+      38 002F  83 C2 30					ADD DX, '0'
+      39 0032  EB 04 90					JMP PRINT
+      40 0035						LETTER:
+      41 0035  83 C2 37					ADD DX, 55
+      42				
+      43 0038						PRINT:
+      44 0038  50					PUSH AX
+      45 0039  B4 02					MOV AH, 2
+      46 003B  CD 21					INT 21H
+      47 003D  58					POP AX
+      48						
+      49 003E  4E					DEC SI
+      50 003F  75 CA					JNZ NEXT
+      51						
+      52 0041  5D					POP BP
+      53 0042  C2 0002					RET 2
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-2
+
+
+      54 0045					HEX_UNSIGN ENDP
+      55					
+      56 0045				CSEG ENDS
+      57				
+      58				PUBLIC HEX_UNSIGN
+      59				
+      60				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0045	PARA	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+HEX_UNSIGN . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 0045
+
+LETTER . . . . . . . . . . . . .  	L NEAR	0035	CSEG
+
+NEXT . . . . . . . . . . . . . .  	L NEAR	000B	CSEG
+
+PRINT  . . . . . . . . . . . . .  	L NEAR	0038	CSEG
+
+SKIP_1 . . . . . . . . . . . . .  	L NEAR	0015	CSEG
+SKIP_2 . . . . . . . . . . . . .  	L NEAR	001C	CSEG
+SKIP_3 . . . . . . . . . . . . .  	L NEAR	0023	CSEG
+SKIP_4 . . . . . . . . . . . . .  	L NEAR	002A	CSEG
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F6		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     60 Source  Lines
+     60 Total   Lines
+     19 Symbols
+
+  46536 + 441332 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

@@ -1,0 +1,152 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN MENU_PRINT: NEAR
+       2				EXTRN MENU_INPUT: NEAR
+       3				EXTRN INPUT: NEAR
+       4				EXTRN BIN_SIGN: NEAR
+       5				EXTRN BIN_UNSIGN: NEAR
+       6				EXTRN DEC_SIGN: NEAR
+       7				EXTRN DEC_UNSIGN: NEAR
+       8				EXTRN HEX_SIGN: NEAR
+       9				EXTRN HEX_UNSIGN: NEAR
+      10				EXTRN EXIT: NEAR
+      11				EXTRN NEW_LINE: NEAR
+      12				
+      13 0000				FUNC_DATA SEGMENT PARA PUBLIC 'DATA'
+      14 0000  0000 E				F0 DW MENU_PRINT
+      15 0002  0000 E				F1 DW INPUT
+      16 0004  0000 E				F2 DW BIN_UNSIGN
+      17 0006  0000 E				F3 DW BIN_SIGN
+      18 0008  0000 E				F4 DW DEC_UNSIGN
+      19 000A  0000 E				F5 DW DEC_SIGN
+      20 000C  0000 E				F6 DW HEX_UNSIGN
+      21 000E  0000 E				F7 DW HEX_SIGN
+      22 0010  0000 E				F_EXIT DW EXIT
+      23 0012  0000 E				F_LINE DW NEW_LINE
+      24 0014  0000				MENU_NUM DW 0
+      25 0016  0000				X DW ?
+      26 0018				FUNC_DATA ENDS
+      27				
+      28 0000				SSTACK SEGMENT PARA STACK 'STACK'
+      29 0000  0064[				db 100 dup(0)
+      30	   00			
+      31			 ]	
+      32				
+      33 0064				SSTACK ENDS
+      34				
+      35				SUBTTL MAIN PROGRAMM
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-2
+MAIN PROGRAMM                                               
+
+      36				PAGE
+      37				
+      38 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+      39					ASSUME CS:CSEG, SS: SSTACK, DS:
+					 FUNC_DATA
+      40					
+      41 0000				MAIN:
+      42 0000  B8 ---- R			MOV AX, FUNC_DATA
+      43 0003  8E D8				MOV DS, AX
+      44				
+      45 0005				READING:
+      46				
+      47					; READING MENU NUMBER
+      48 0005  BB 0014 R			MOV BX, OFFSET MENU_NUM
+      49 0008  53				PUSH BX
+      50 0009  E8 0000 E			CALL MENU_INPUT
+      51					
+      52 000C  83 3E 0014 R 08			CMP MENU_NUM, 8
+      53 0011  7F F2				JG READING
+      54					
+      55					; CALCULATING FUNCTION ADDRESS
+      56 0013  B8 0002				MOV AX, 2
+      57 0016  F7 26 0014 R			MUL MENU_NUM
+      58					
+      59 001A  05 0000 R			ADD AX, OFFSET F0
+      60 001D  8B D8				MOV BX, AX
+      61					
+      62					; PUSHING POINTER AS ARGUMENT
+      63 001F  B8 0016 R			MOV AX, OFFSET X
+      64 0022  50				PUSH AX
+      65					
+      66					; CALL FUNCTION
+      67 0023  FF 17				CALL [BX]
+      68					
+      69					; GO BACK TO READING FROM CONSO
+					LE
+      70 0025  EB DE				JMP READING
+      71					
+      72 0027				CSEG ENDS
+      73				
+      74				END MAIN
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0027	PARA	PUBLIC	'CODE'
+FUNC_DATA  . . . . . . . . . . .  	0018	PARA	PUBLIC	'DATA'
+SSTACK . . . . . . . . . . . . .  	0064	PARA	STACK	'STACK'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+BIN_SIGN . . . . . . . . . . . .  	L NEAR	0000		External
+BIN_UNSIGN . . . . . . . . . . .  	L NEAR	0000		External
+
+DEC_SIGN . . . . . . . . . . . .  	L NEAR	0000		External
+DEC_UNSIGN . . . . . . . . . . .  	L NEAR	0000		External
+
+EXIT . . . . . . . . . . . . . .  	L NEAR	0000		External
+
+F0 . . . . . . . . . . . . . . .  	L 0002	0000	FUNC_DATA
+F1 . . . . . . . . . . . . . . .  	L 0002	0002	FUNC_DATA
+F2 . . . . . . . . . . . . . . .  	L 0002	0004	FUNC_DATA
+F3 . . . . . . . . . . . . . . .  	L 0002	0006	FUNC_DATA
+F4 . . . . . . . . . . . . . . .  	L 0002	0008	FUNC_DATA
+F5 . . . . . . . . . . . . . . .  	L 0002	000A	FUNC_DATA
+F6 . . . . . . . . . . . . . . .  	L 0002	000C	FUNC_DATA
+F7 . . . . . . . . . . . . . . .  	L 0002	000E	FUNC_DATA
+F_EXIT . . . . . . . . . . . . .  	L 0002	0010	FUNC_DATA
+F_LINE . . . . . . . . . . . . .  	L 0002	0012	FUNC_DATA
+
+HEX_SIGN . . . . . . . . . . . .  	L NEAR	0000		External
+HEX_UNSIGN . . . . . . . . . . .  	L NEAR	0000		External
+
+INPUT  . . . . . . . . . . . . .  	L NEAR	0000		External
+
+MAIN . . . . . . . . . . . . . .  	L NEAR	0000	CSEG
+MENU_INPUT . . . . . . . . . . .  	L NEAR	0000		External
+MENU_NUM . . . . . . . . . . . .  	L WORD	0014	FUNC_DATA
+MENU_PRINT . . . . . . . . . . .  	L NEAR	0000		External
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+
+READING  . . . . . . . . . . . .  	L NEAR	0005	CSEG
+
+X  . . . . . . . . . . . . . . .  	L WORD	0016	FUNC_DATA
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  programm		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-2
+
+
+
+     71 Source  Lines
+     71 Total   Lines
+     40 Symbols
+
+  46560 + 437213 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

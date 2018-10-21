@@ -1,0 +1,92 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN NEW_LINE: NEAR
+       2				
+       3 0000				DataS   SEGMENT WORD 'DATA'
+       4 0000  0D			CHOOSE_MESSAGE   DB   13
+       5 0001  0A			                DB   10
+       6 0002  43 48 4F 4F 53 45	                DB   'CHOOSE MENU ELEME
+					NT: '
+       7       20 4D 45 4E 55 20	
+       8       45 4C 45 4D 45 4E	
+       9       54 3A 20			
+      10 0017  24							DB '$'
+      11								
+      12 0018				DataS   ENDS
+      13				
+      14 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+      15					ASSUME CS:CSEG, DS: DataS
+      16					
+      17 0000					MENU_INPUT PROC NEAR
+      18 0000  55					PUSH BP
+      19 0001  8B EC					MOV BP, SP
+      20 0003  8B 46 04					MOV AX, [BP + 4] ; Во
+					звращаемый параметр
+      21 0006  8B D8					MOV BX, AX
+      22 0008  1E					PUSH DS
+      23						
+      24 0009  B8 ---- R				MOV AX, DataS
+      25 000C  8E D8					MOV DS, AX
+      26						
+      27						; MESSAGE
+      28 000E  B4 09					MOV AH, 9
+      29 0010  BA 0000 R				MOV DX, OFFSET CHOOSE_M
+					ESSAGE
+      30 0013  CD 21					INT 21H
+      31 0015  1F					POP DS
+      32						
+      33 0016  B4 07					MOV   AH,7    ; READING
+					 SYMBOL                 ;АН=07h вв�
+					�сти символ без эха
+      34 0018  CD 21			        INT   21h		
+      35						
+      36 001A  2C 30					SUB AL, 30H
+      37 001C  88 07					MOV [BX], AL
+      38						
+      39 001E  E8 0000 E				CALL NEW_LINE
+      40						
+      41 0021  5D					POP BP
+      42 0022  C2 0002					RET 2
+      43 0025					MENU_INPUT ENDP
+      44					
+      45 0025				CSEG ENDS
+      46				
+      47				PUBLIC MENU_INPUT
+      48				
+      49				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0025	PARA	PUBLIC	'CODE'
+DATAS  . . . . . . . . . . . . .  	0018	WORD	NONE	'DATA'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+CHOOSE_MESSAGE . . . . . . . . .  	L BYTE	0000	DATAS
+
+MENU_INPUT . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 0025
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  M_INPUT		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     46 Source  Lines
+     46 Total   Lines
+     16 Symbols
+
+  46498 + 441370 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

@@ -1,0 +1,116 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN NEW_LINE: NEAR
+       2				
+       3 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+       4					ASSUME CS:CSEG
+       5					
+       6 0000					BIN_UNSIGN PROC NEAR
+       7 0000  55					PUSH BP
+       8 0001  8B EC					MOV BP, SP
+       9 0003  8B 5E 04					MOV BX, [BP + 4]
+      10 0006  8B 07					MOV AX, [BX]
+      11 0008  56					PUSH SI
+      12						
+      13 0009  BE 000F					MOV SI, 15
+      14						
+      15						; REMOVING LEADING ZERO
+					S
+      16 000C						REMOVE_LEADING:
+      17 000C  D1 E0					SHL AX, 1
+      18 000E  73 03					JNC IGNORE_SYMBOL ; IF 
+					CF == 0, WE NEED TO IGNORE IT
+      19 0010  EB 07 90					JMP FORWARD ; DIGIT IS 
+					1, SO GO FORWARD TO PRINTING
+      20						
+      21 0013						IGNORE_SYMBOL:
+      22 0013  4E					DEC SI
+      23 0014  75 F6					JNZ REMOVE_LEADING
+      24 0016  EB 1A 90					JMP FINISH ; IF SI == 0
+					 IT MEANS THAT THERE IS NO DIGITS LEFT
+      25						
+      26						; THE FIRST SYMBOL IS A
+					LWAYS '1'
+      27 0019						FORWARD:
+      28 0019  50					PUSH AX
+      29 001A  B2 31					MOV DL, '1'
+      30 001C  B4 02					MOV AH, 2
+      31 001E  CD 21					INT 21H
+      32 0020  58					POP AX
+      33						
+      34 0021						NEXT:
+      35 0021  D1 E0					SHL AX, 1
+      36 0023  B2 30					MOV DL, '0'
+      37 0025  73 02					JNC PRINTING; IF CF == 
+					1 THEN DL += 1 TO BECOME '1'
+      38 0027  FE C2					INC DL ; MAKE '0' -> '1
+					'
+      39						
+      40 0029						PRINTING:
+      41 0029  50					PUSH AX
+      42 002A  B4 02					MOV AH, 2
+      43 002C  CD 21					INT 21H
+      44 002E  58					POP AX		
+      45 002F  4E					DEC SI
+      46 0030  75 EF					JNZ NEXT
+      47						
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-2
+
+
+      48 0032						FINISH:
+      49 0032  E8 0000 E				CALL NEW_LINE
+      50						
+      51 0035  5E					POP SI
+      52 0036  5D					POP BP
+      53 0037  C2 0002					RET 2
+      54 003A					BIN_UNSIGN ENDP
+      55					
+      56 003A				CSEG ENDS
+      57				
+      58				PUBLIC BIN_UNSIGN
+      59				
+      60				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	003A	PARA	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+BIN_UNSIGN . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 003A
+
+FINISH . . . . . . . . . . . . .  	L NEAR	0032	CSEG
+FORWARD  . . . . . . . . . . . .  	L NEAR	0019	CSEG
+
+IGNORE_SYMBOL  . . . . . . . . .  	L NEAR	0013	CSEG
+
+NEW_LINE . . . . . . . . . . . .  	L NEAR	0000		External
+NEXT . . . . . . . . . . . . . .  	L NEAR	0021	CSEG
+
+PRINTING . . . . . . . . . . . .  	L NEAR	0029	CSEG
+
+REMOVE_LEADING . . . . . . . . .  	L NEAR	000C	CSEG
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F2		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     60 Source  Lines
+     60 Total   Lines
+     19 Symbols
+
+  46536 + 441332 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

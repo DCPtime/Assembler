@@ -1,0 +1,89 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1				EXTRN DEC_UNSIGN: NEAR
+       2				
+       3 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+       4					ASSUME CS:CSEG
+       5					
+       6 0000					DEC_SIGN PROC NEAR
+       7 0000  55					PUSH BP
+       8 0001  8B EC					MOV BP, SP
+       9 0003  8B 5E 04					MOV BX, [BP + 4]
+      10 0006  8B 07					MOV AX, [BX] ; AX CONTA
+					INS RAW VALUE
+      11						
+      12 0008  50					PUSH AX ; SAVING RAW AR
+					GUMENT
+      13						
+      14 0009  3D 0000					CMP AX, 0
+      15						; SIGNED COMPARISON, IF
+					 GREATER OR EQUAL => POSITIVE
+      16 000C  7D 0C					JGE POSITIVE; IF VALUE 
+					IS POSITIVE,  WE PRINT IT AS AN UNSIGNE
+					D
+      17						
+      18						; IF VALUE IS NEGATIVE,
+					 WE NEED TO PRINT '-' AND THEN NEGATE I
+					T
+      19 000E  50					PUSH AX		
+      20 000F  B2 2D					MOV DL, '-'
+      21 0011  B4 02					MOV AH, 2
+      22 0013  CD 21					INT 21H
+      23 0015  58					POP AX
+      24						
+      25 0016  F7 D8					NEG AX
+      26 0018  89 07					MOV [BX], AX	
+						
+      27 001A						POSITIVE: 
+      28						
+      29 001A  53					PUSH BX ; POINTER TO AR
+					GUMENT
+      30 001B  E8 0000 E				CALL DEC_UNSIGN
+      31						
+      32 001E  58					POP AX ; RESTORING ORIG
+					INAL ARGUMENT
+      33 001F  89 07					MOV [BX], AX
+      34						
+      35 0021  5D					POP BP
+      36 0022  C2 0002					RET 2
+      37 0025					DEC_SIGN ENDP
+      38					
+      39 0025				CSEG ENDS
+      40				
+      41				PUBLIC DEC_SIGN
+      42				
+      43				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	0025	PARA	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+DEC_SIGN . . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 0025
+DEC_UNSIGN . . . . . . . . . . .  	L NEAR	0000		External
+
+POSITIVE . . . . . . . . . . . .  	L NEAR	001A	CSEG
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  F5		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     43 Source  Lines
+     43 Total   Lines
+     14 Symbols
+
+  46536 + 441332 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

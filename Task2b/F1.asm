@@ -1,0 +1,94 @@
+EXTRN NEW_LINE: NEAR
+
+DataS   SEGMENT WORD 'DATA'
+INPUT_MESSAGE   DB   13
+                DB   10
+                DB   'INPUT VALUE: '
+				DB '$'
+				
+DataS   ENDS
+
+CSEG SEGMENT PARA PUBLIC 'CODE'
+	ASSUME CS:CSEG, DS:DataS
+	
+	INPUT PROC NEAR
+		PUSH BP
+		MOV BP, SP
+		MOV AX, [BP + 4] ; Возвращаемый параметр
+		MOV BX, AX	
+		PUSH DS
+		
+		MOV AX, DataS
+		MOV DS, AX
+		
+		; PRINTING  INTRO
+		MOV AH, 9
+		MOV DX, OFFSET INPUT_MESSAGE
+		INT 21H
+		
+		POP DS
+		
+		; INITIAL VALUE
+		MOV AX, 0
+		MOV [BX], AX
+		
+		; READING SIGN
+		MOV AH, 7
+		INT 21H
+		; ECHO
+		MOV AH, 2
+		MOV DL, AL
+		INT 21H
+		
+		MOV DH, 0
+		CMP AL, '-'
+		JNE POSITIVE
+		MOV DH, 1 ; HAS '-' SIGN
+		MOV AL, '0'
+		POSITIVE:
+		SUB AL, '0'
+		ADD [BX], AL
+		
+		; READING LOOP WHILE SYMBOL <= 9
+		READING:
+		MOV AH, 7
+		INT 21H		
+		; ECHO
+		MOV AH, 2
+		MOV DL, AL
+		INT 21H
+		
+		SUB AL, '0'
+		CMP AL, 9
+		JA FINISH
+		
+		MOV DL, AL
+		MOV CL, 10
+		MOV AX, [BX]
+		MUL CL
+		
+		MOV [BX], AX
+		ADD [BX], DL
+		JMP READING		
+		
+		FINISH:
+		
+		CMP DH, 1
+		JNE NO_SIGN
+		MOV AX, [BX]
+		NEG AX
+		MOV [BX], AX
+		
+		NO_SIGN:
+		
+		CALL NEW_LINE
+		
+		POP BP
+		RET 2
+	INPUT ENDP
+	
+CSEG ENDS
+
+PUBLIC INPUT
+
+END

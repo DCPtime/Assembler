@@ -1,0 +1,51 @@
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Page     1-1
+
+
+       1 0000				CSEG SEGMENT PARA PUBLIC 'CODE'
+       2					ASSUME CS:CSEG
+       3					
+       4 0000					NEW_LINE PROC NEAR	
+       5 0000  B4 02					MOV AH, 2
+       6 0002  B6 00					MOV DH, 0
+       7 0004  B2 0D					MOV DL, 13
+       8 0006  CD 21					INT 21H		
+       9 0008  B2 0A					MOV DL, 10
+      10 000A  CD 21					INT  21H
+      11 000C  C3					RET
+      12 000D					NEW_LINE ENDP
+      13					
+      14 000D				CSEG ENDS
+      15				
+      16				PUBLIC NEW_LINE
+      17				
+      18				END
+Microsoft (R) Macro Assembler Version 5.10                  5/31/18 07:34:12
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CSEG . . . . . . . . . . . . . .  	000D	PARA	PUBLIC	'CODE'
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+NEW_LINE . . . . . . . . . . . .  	N PROC	0000	CSEG	Global	Length = 000D
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  NEW_LINE		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     18 Source  Lines
+     18 Total   Lines
+     12 Symbols
+
+  46634 + 441234 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors
